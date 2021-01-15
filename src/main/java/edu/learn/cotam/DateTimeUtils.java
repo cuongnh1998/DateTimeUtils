@@ -12,6 +12,11 @@ import java.util.Date;
  */
 public class DateTimeUtils {
 
+    public static final String PATTERN_01 = "yyyy/MM/dd";
+
+    public static final String PATTERN_02 = "yyyy-MM-dd";
+
+
     /**
      * lầy thời gian
      * <p>
@@ -261,7 +266,7 @@ public class DateTimeUtils {
      * @return trả về thời gian dạng yyyy-MM-dd vd 2020-12-22
      */
     public static String getDateNoTime(Date date) {
-        return (new SimpleDateFormat("yyyy-MM-dd")).format(date);
+        return (new SimpleDateFormat(PATTERN_02)).format(date);
     }
 
     /**
@@ -286,5 +291,43 @@ public class DateTimeUtils {
     public static boolean isWeekEnd(Date date) {
         int day = date.getDay();
         return day == DayOfWeek.SUNDAY.getValue() || day == DayOfWeek.SATURDAY.getValue();
+    }
+
+    /**
+     * cộng thêm 1 khoảng <code>day ngày</code> khoảng ngày
+     *
+     * @param date thời gian truyền vào dạng java.util.Date
+     * @param day khoảng thời gian dạng int
+     * @return trả về kết quả là ngày muốn cộng
+     */
+    public static Date plusDays(Date date, int day){
+        return java.util.Date.from(
+                LocalDateTime.from(
+                        date.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                )
+                        .plusDays(day)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+        );
+    }
+
+    /**
+     * trừ thêm 1 khoảng <code>day ngày</code> khoảng ngày
+     *
+     * @param date thời gian truyền vào dạng java.util.Date
+     * @param day khoảng thời gian dạng int
+     * @return trả về kết quả là ngày muốn trừ
+     */
+    public static Date minusDays(Date date, int day){
+        return java.util.Date.from(
+                LocalDateTime.from(
+                        date.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                )
+                        .minusDays(day)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+        );
     }
 }

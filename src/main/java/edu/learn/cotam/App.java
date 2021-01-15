@@ -1,7 +1,12 @@
 package edu.learn.cotam;
 
+import java.util.Date;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println(DateTimeUtils.atEndOfDay());
+        Date now = new Date();
+        System.out.println(now);
+        System.out.println(DateTimeUtils.plusDays(now,20));
+        System.out.println(DateTimeUtils.minusDays(now,20));
     }
 }
