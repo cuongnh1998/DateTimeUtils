@@ -4,6 +4,7 @@ package edu.learn.cotam;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -192,6 +193,47 @@ public class DateTimeUtils {
         return date.toInstant().atZone(ZoneId.systemDefault()).getMonthValue();
     }
 
+    /**
+     * Returns the hour represented by this <tt>Date</tt> object. The
+     * returned value is a number (<tt>0</tt> through <tt>23</tt>)
+     * representing the hour within the day that contains or begins
+     * with the instant in time represented by this <tt>Date</tt>
+     * object, as interpreted in the local time zone.
+     * @param date date input
+     * @return  the hour represented by this date.
+     */
+    public static int getHours(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).getHour();
+    }
+
+    /**
+     * Returns the number of minutes past the hour represented by this date,
+     * as interpreted in the local time zone.
+     * The value returned is between <code>0</code> and <code>59</code>.
+     * @param date date input
+     * @return  the number of minutes past the hour represented by this date.
+     */
+    public static int getMinutes(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).getMinute();
+    }
+
+    /**
+     * Returns the number of seconds past the minute represented by this date.
+     * The value returned is between <code>0</code> and <code>61</code>. The
+     * values <code>60</code> and <code>61</code> can only occur on those
+     * @param date date input
+     * @return  the number of seconds past the minute represented by this date.
+     */
+    public static int getSeconds(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).getSecond();
+    }
+
+    public static Calendar getCalendar(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
     public static Date getDayStartOffMonth(int month, int year) {
         LocalDate localDate = LocalDate.of(year, month, 1);
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -259,6 +301,49 @@ public class DateTimeUtils {
     }
 
     /**
+     * lấy ngày trong tháng hiện tại
+     * <p>
+     * @param date thời gian
+     * @return trả về ngày trong tháng hiện tại từ 1 đến 31
+     */
+    public static int getDayOfMont(Date date){
+        Calendar calendar = getCalendar(date);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * Obtains an instance of {@code DayOfWeek} from an {@code int} value.
+     * <p>
+     * {@code DayOfWeek} is an enum representing the 7 days of the week.
+     * This factory allows the enum to be obtained from the {@code int} value.
+     * The {@code int} value follows the ISO-8601 standard, from 1 (Monday) to 7 (Sunday).
+     * <p>
+     * The singleton instance for the day-of-week of Monday.
+     * This has the numeric value of {@code 1}.
+     * <p>
+     * The singleton instance for the day-of-week of Tuesday.
+     * This has the numeric value of {@code 2}.
+     * <p>
+     * The singleton instance for the day-of-week of Wednesday.
+     * This has the numeric value of {@code 3}.
+     * <p>
+     * The singleton instance for the day-of-week of Thursday.
+     * This has the numeric value of {@code 4}.
+     * <p>
+     * The singleton instance for the day-of-week of Friday.
+     * This has the numeric value of {@code 5}.
+     * <p>
+     * The singleton instance for the day-of-week of Saturday.
+     * This has the numeric value of {@code 6}.
+     * <p>
+     * The singleton instance for the day-of-week of Sunday.
+     * This has the numeric value of {@code 7}.
+     */
+    public static int getDayOfWeek(Date date){
+        return date.toInstant().atZone(ZoneId.systemDefault()).getDayOfWeek().getValue();
+    }
+
+    /**
      * lấy về thời gian ko có giờ phút giây
      * <p>
      *
@@ -289,7 +374,7 @@ public class DateTimeUtils {
      * @return trả về true nếu là thứ 7 hoặc chủ nhật , false nếu ko
      */
     public static boolean isWeekEnd(Date date) {
-        int day = date.getDay();
+        int day = getDayOfWeek(date);
         return day == DayOfWeek.SUNDAY.getValue() || day == DayOfWeek.SATURDAY.getValue();
     }
 
@@ -328,6 +413,17 @@ public class DateTimeUtils {
                         .minusDays(day)
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
+        );
+    }
+
+    public static Date changeTimeInDate(Date date,int hour, int minute, int second){
+        int year = getYear(date);
+        int month = getMonth(date);
+        int dayOfMonth = getDayOfMont(date);
+        return java.util.Date.from(
+                LocalDateTime.of(year,month,dayOfMonth,hour,minute,second)
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
         );
     }
 }

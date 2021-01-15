@@ -8,5 +8,7 @@ public class App {
         System.out.println(now);
         System.out.println(DateTimeUtils.plusDays(now,20));
         System.out.println(DateTimeUtils.minusDays(now,20));
+        System.out.println(DateTimeUtils.changeTimeInDate(now,0,0,0));
+        System.out.println(DateTimeUtils.getHours(now));
     }
 }
